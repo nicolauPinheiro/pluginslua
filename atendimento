@@ -1,5 +1,5 @@
 -- @name: Natty Atendimento
--- @commands: natty
+-- @commands: atendimento
 -- @global: true
 
 local ATIVO = true
