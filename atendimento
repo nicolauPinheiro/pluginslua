@@ -119,6 +119,7 @@ function on_message(msg)
     end
 
     if contem(texto, saudacoes) then
+        bot.set_chat_presence(msg.chat, "typing")
         bot.sleep(3)
         -- Cria um arquivo temporário dentro do sandbox
         local arquivo = bot.temp_file(".jpg")
@@ -188,6 +189,7 @@ function on_message(msg)
     end
 
     if contem(texto, pedidos) then
+        bot.set_chat_presence(msg.chat, "typing")
         bot.sleep(3)
         bot.send_message(
             msg.chat,
@@ -198,6 +200,7 @@ function on_message(msg)
     end
 
     if contem(texto, enderecos) then
+        bot.set_chat_presence(msg.chat, "typing")
         bot.sleep(3)
         bot.send_message(
             msg.chat,
