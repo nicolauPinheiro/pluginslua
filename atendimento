@@ -1,0 +1,151 @@
+-- @name: Natty Atendimento
+-- @commands: natty
+-- @global: true
+
+local ATIVO = true
+
+local resposta_saudacao =
+    "Olá, seja bem-vindo a Natty Quentinhas 👩‍🍳. Aguarde um instante, já enviaremos as opções disponíveis do cardápio do dia"
+
+local resposta_pedido =
+    "Ótimo, agora me informe seu endereço, com algum ponto de referência, se houver."
+
+local resposta_endereco =
+    "Informe a forma de pagamento: Pix ou Dinheiro?"
+
+local saudacoes = {
+    "olá",
+    "ola",
+    "bom dia",
+    "boa tarde",
+    "gostaria de fazer um pedido",
+    "gostaria de uma quentinha",
+    "estão atendendo",
+    "estao atendendo",
+    "está atendendo",
+    "esta atendendo",
+    "está fazendo quentinha hoje",
+    "esta fazendo quentinha hoje",
+    "vendendo hoje",
+    "funcionando hoje",
+    "estão realizando entregas",
+    "estao realizando entregas",
+    "fazer um pedido",
+    "oi",
+    "oiie"
+}
+
+local pedidos = {
+    "querer uma quentinha",
+    "quentinha de",
+    "frango",
+    "peixe",
+    "acebolado",
+    "ao molho",
+    "frito",
+    "cozido",
+    "querer 2",
+    "querer 3"
+}
+
+local enderecos = {
+    "perto da",
+    "perto do",
+    "rua",
+    "bairro",
+    "próximo",
+    "proximo",
+    "em frente",
+    "ao lado",
+    "atrás",
+    "atras",
+    "depois da",
+    "depois do",
+    "casa da",
+    "casa do"
+}
+
+local function contem(texto, lista)
+
+    for _, palavra in ipairs(lista) do
+
+        if string.find(texto, palavra, 1, true) then
+            return true
+        end
+
+    end
+
+    return false
+end
+
+function on_command(msg)
+
+    local comando = string.lower(msg.command or "")
+
+    if comando == "natty" then
+
+        ATIVO = not ATIVO
+
+        if ATIVO then
+            bot.reply(
+                msg.chat,
+                "✅ Atendimento automático da Natty ativado.",
+                msg.id,
+                msg.sender
+            )
+        else
+            bot.reply(
+                msg.chat,
+                "⛔ Atendimento automático da Natty desativado.",
+                msg.id,
+                msg.sender
+            )
+        end
+
+    end
+
+end
+
+function on_message(msg)
+
+    if not ATIVO then
+        return
+    end
+
+    local texto = string.lower(msg.text or "")
+
+    if texto == "" then
+        return
+    end
+
+    if contem(texto, saudacoes) then
+
+        bot.send_message(
+            msg.chat,
+            resposta_saudacao
+        )
+
+        return
+    end
+
+    if contem(texto, pedidos) then
+
+        bot.send_message(
+            msg.chat,
+            resposta_pedido
+        )
+
+        return
+    end
+
+    if contem(texto, enderecos) then
+
+        bot.send_message(
+            msg.chat,
+            resposta_endereco
+        )
+
+        return
+    end
+
+end
