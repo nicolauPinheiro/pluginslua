@@ -3,7 +3,7 @@
 -- @global: true
 
 local ATIVO = true
-
+local CARDAPIO_URL = "https://www.acematao.com.br/images/upload/images/Email_2.jpg"
 local resposta_saudacao =
     "Olá, seja bem-vindo a Natty Quentinhas 👩‍🍳. Aguarde um instante, já enviaremos as opções disponíveis do cardápio do dia"
 
@@ -120,6 +120,65 @@ function on_message(msg)
 
     if contem(texto, saudacoes) then
         bot.sleep(3)
+        -- Cria um arquivo temporário dentro do sandbox
+        local arquivo = bot.temp_file(".jpg")
+
+        if not arquivo then
+            bot.reply(
+                msg.chat,
+                "❌ Não foi possível preparar o cardápio.",
+                msg.id,
+                msg.sender
+            )
+            return
+        end
+
+        -- Baixa a imagem da URL
+        local sucesso, erro = bot.download_file(
+            CARDAPIO_URL,
+            arquivo
+        )
+
+        if not sucesso then
+            bot.reply(
+                msg.chat,
+                "❌ Não foi possível baixar o cardápio.",
+                msg.id,
+                msg.sender
+            )
+
+            bot.log_error(
+                "Erro ao baixar cardápio: " .. tostring(erro)
+            )
+
+            return
+        end
+
+        -- Envia a imagem para quem executou o comando
+        local enviado, erro_envio = bot.send_media(
+            msg.chat,
+            arquivo,
+            "image",
+            "🍱 Cardápio da Natty Quentinhas"
+        )
+
+        if not enviado then
+            bot.reply(
+                msg.chat,
+                "❌ Não foi possível enviar o cardápio.",
+                msg.id,
+                msg.sender
+            )
+
+            bot.log_error(
+                "Erro ao enviar cardápio: " .. tostring(erro_envio)
+            )
+
+            return
+        end
+
+        -- Apaga o arquivo temporário
+        bot.delete_file(arquivo)
         bot.send_message(
             msg.chat,
             resposta_saudacao
