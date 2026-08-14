@@ -4,8 +4,6 @@
 
 local ATIVO = true
 
-local DELAY = 3
-
 local resposta_saudacao =
     "Olá, seja bem-vindo a Natty Quentinhas 👩‍🍳. Aguarde um instante, já enviaremos as opções disponíveis do cardápio do dia"
 
@@ -67,10 +65,6 @@ local enderecos = {
     "casa do"
 }
 
-local function esperar()
-    bot.sleep(3000)
-end
-
 local function contem(texto, lista)
 
     for _, palavra in ipairs(lista) do
@@ -78,6 +72,7 @@ local function contem(texto, lista)
         if string.find(texto, palavra, 1, true) then
             return true
         end
+
     end
 
     return false
@@ -87,29 +82,26 @@ function on_command(msg)
 
     local comando = string.lower(msg.command or "")
 
-    if comando == "atendimento" then
+    if comando == "natty" then
 
         ATIVO = not ATIVO
 
         if ATIVO then
-
             bot.reply(
                 msg.chat,
                 "✅ Atendimento automático da Natty ativado.",
                 msg.id,
                 msg.sender
             )
-
         else
-
             bot.reply(
                 msg.chat,
                 "⛔ Atendimento automático da Natty desativado.",
                 msg.id,
                 msg.sender
             )
-
         end
+
     end
 
 end
@@ -127,9 +119,7 @@ function on_message(msg)
     end
 
     if contem(texto, saudacoes) then
-
-        esperar()
-
+        bot.sleep(3)
         bot.send_message(
             msg.chat,
             resposta_saudacao
@@ -139,9 +129,7 @@ function on_message(msg)
     end
 
     if contem(texto, pedidos) then
-
-        esperar()
-
+        bot.sleep(3)
         bot.send_message(
             msg.chat,
             resposta_pedido
@@ -151,9 +139,7 @@ function on_message(msg)
     end
 
     if contem(texto, enderecos) then
-
-        esperar()
-
+        bot.sleep(3)
         bot.send_message(
             msg.chat,
             resposta_endereco
