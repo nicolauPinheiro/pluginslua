@@ -3,7 +3,7 @@
 -- @global: true
 
 local ATIVO = true
-local CARDAPIO_URL = "https://www.acematao.com.br/images/upload/images/Email_2.jpg"
+local CARDAPIO_URL = "https://questaocerta.com.br/cardapio/uploads/cardapio-atual.jpg"
 local resposta_saudacao =
     "Olá, seja bem-vindo a Natty Quentinhas 👩‍🍳. Aguarde um instante, já enviaremos as opções disponíveis do cardápio do dia"
 
